@@ -13,10 +13,12 @@ import { usePathname } from "next/navigation";
 import ColorButton from "./ui/ColorButton";
 
 import { useSession, signIn, signOut } from "next-auth/react";
+import Avatar from "./ui/Avatar";
 
 export default function Nav() {
   const pathname = usePathname();
   const { data: session } = useSession();
+  const user = session?.user;
 
   return (
     <div className="bg-white flex justify-between items-center px-6">
@@ -33,11 +35,20 @@ export default function Nav() {
             </Link>
           </li>
         ))}
-        {session ? (
-          <ColorButton text="Sign out" onClick={() => signOut()} />
-        ) : (
-          <ColorButton text="Sign in" onClick={() => signIn()} />
+        {user && (
+          <li>
+            <Link href={`/user/${user.username}`}>
+              <Avatar image={user.image} />
+            </Link>
+          </li>
         )}
+        <li>
+          {session ? (
+            <ColorButton text="Sign out" onClick={() => signOut()} />
+          ) : (
+            <ColorButton text="Sign in" onClick={() => signIn()} />
+          )}
+        </li>
       </ul>
     </div>
   );
