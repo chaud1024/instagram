@@ -11,7 +11,7 @@ type Props = {
   };
 };
 
-export default async function SignInpage({
+export default async function SignInPage({
   searchParams: { callbackUrl },
 }: Props) {
   const session = await getServerSession(authOptions);

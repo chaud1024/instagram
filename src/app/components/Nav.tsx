@@ -13,7 +13,7 @@ import { usePathname } from "next/navigation";
 import ColorButton from "./ui/ColorButton";
 
 import { useSession, signIn, signOut } from "next-auth/react";
-import Avatar from "./ui/Avatar";
+import Avatar from "./Avatar";
 
 export default function Nav() {
   const pathname = usePathname();
