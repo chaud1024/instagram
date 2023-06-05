@@ -1,5 +1,6 @@
 import Nav from "./components/Nav";
 import AuthContext from "./context/AuthContext";
+import SWRConfigContext from "./context/SWRConfigContext";
 import "./globals.css";
 import { Open_Sans } from "next/font/google";
 
@@ -22,7 +23,9 @@ export default function RootLayout({
           <header className="sticky top-0 bg-white z-10 border-b border-gray-400">
             <Nav />
           </header>
-          <main>{children}</main>
+          <main>
+            <SWRConfigContext>{children}</SWRConfigContext>
+          </main>
         </AuthContext>
       </body>
     </html>
