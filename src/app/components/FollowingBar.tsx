@@ -1,12 +1,39 @@
 "use client";
 import useSWR from "swr";
+import { DetailUser } from "../model/user";
+import { PropagateLoader } from "react-spinners";
+import Link from "next/link";
+import Avatar from "./Avatar";
 
 export default function FollowingBar() {
-  const { data, isLoading, error } = useSWR("/api/hello");
-  console.log(data);
-  // 1. 클라이언트 컴포넌트에서 백엔드(서버)에게 api/me 를 통해 사용자의 정보 얻음
-  // 2. 백엔드에서는 현재 로그인된 사용자의 세션 정보를 이용하여
-  // 3. 백엔드에서 사용자의 상세정보를 Sanity에서 가져옴(followings)
-  // 4. 여기(클라이언트컴포넌트)에서 followings의 정보를 ui에 보여줌
-  return <div>FollowingBar</div>;
+  const { data, isLoading: loading, error } = useSWR<DetailUser>("/api/me");
+  // console.log(data?.following);
+
+  const users = data?.following;
+
+  return (
+    <section className="w-full flex justify-center items-center p-4 shadow-sm shadow-neutral-300 mb-4 rounded-lg min-h-[90px] overflow-x-auto">
+      {loading ? (
+        <PropagateLoader size={8} color="red" />
+      ) : (
+        (!users || users.length === 0) && <p>{`You don't have following.`}</p>
+      )}
+      {users && users.length > 0 && (
+        <ul className="w-full flex gap-2">
+          {users.map(({ image, username }) => (
+            <li key={username}>
+              <Link
+                href={`/user/${username}`}
+                className="w-20 flex flex-col items-center">
+                <Avatar image={image} hightlight />
+                <p className="w-full text-sm text-ellipsis overflow-hidden text-center">
+                  {username}
+                </p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
 }
