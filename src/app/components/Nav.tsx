@@ -3,16 +3,16 @@
 import Link from "next/link";
 import { kimjungchul } from "../font/typeFont";
 
-import HomeIcon from "./ui/icons/HomeIcon";
-import HomeFillIcon from "./ui/icons/HomeFillIcon";
-import SearchIcon from "./ui/icons/SearchIcon";
-import SearchFillIcon from "./ui/icons/SearchFillIcon";
-import NewIcon from "./ui/icons/NewIcon";
-import NewFillIcon from "./ui/icons/NewFillIcon";
 import { usePathname } from "next/navigation";
 import ColorButton from "./ui/ColorButton";
+import HomeFillIcon from "./ui/icons/HomeFillIcon";
+import HomeIcon from "./ui/icons/HomeIcon";
+import NewFillIcon from "./ui/icons/NewFillIcon";
+import NewIcon from "./ui/icons/NewIcon";
+import SearchFillIcon from "./ui/icons/SearchFillIcon";
+import SearchIcon from "./ui/icons/SearchIcon";
 
-import { useSession, signIn, signOut } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Avatar from "./Avatar";
 
 export default function Nav() {
@@ -38,7 +38,7 @@ export default function Nav() {
         {user && (
           <li>
             <Link href={`/user/${user.username}`}>
-              <Avatar image={user.image} size="small" hightlight />
+              <Avatar image={user.image} size="small" highlight />
             </Link>
           </li>
         )}
