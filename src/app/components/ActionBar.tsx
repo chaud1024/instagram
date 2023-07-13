@@ -1,38 +1,36 @@
 import { paresDate } from "@/util/date";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
-import { useSWRConfig } from "swr";
+import React from "react";
+import useMe from "../hooks/me";
+import usePosts from "../hooks/posts";
 import { SimplePost } from "../model/post";
 import ToggleButton from "./ui/ToggleButton";
 import BookmarkFillIcon from "./ui/icons/BookmarkFillIcon";
 import BookmarkIcon from "./ui/icons/BookmarkIcon";
 import HeartFillIcon from "./ui/icons/HeartFillIcon";
 import HeartIcon from "./ui/icons/HeartIcon";
-import usePosts from "../hooks/posts";
 
 type Props = {
   post: SimplePost;
+  children?: React.ReactNode;
 };
 
-export default function ActionBar({ post }: Props) {
-  const { likes, username, text, createdAt, id } = post;
-  const { data: session } = useSession();
-  const user = session?.user;
-  const liked = user ? likes.includes(user?.username) : false;
-  // action bar 내부적으로 상태를 가진 것이 아니라
-  // 외부에서 전달해주는 post의 상태가 변경이 될 때마다
-  // likes안에 해당 로그인한 사용자가 있는 지 여부를 판단
-  const [bookmarked, setBookmarked] = useState(false);
+export default function ActionBar({ post, children }: Props) {
+  const { likes, createdAt, id } = post;
+  const { user, setBookmark } = useMe();
   const { setLike } = usePosts();
-  // 내부적으로 like버튼을 클릭하면
-  // route핸들러에게 like 처리 요청
-  // 요청이 완료되면 home에서 사용하는 api post key를 가지고 있는
-  // swr이 다시 캐시된 값을 revalidate하게 함
+
+  const liked = user ? likes.includes(user?.username) : false;
+
+  const bookmarked = user?.bookmarks.includes(id) ?? false;
+
   const handleLike = (like: boolean) => {
-    if (user) {
-      setLike(post, user.username, like);
-    }
+    user && setLike(post, user.username, like);
   };
+
+  const handleBookmark = (bookmark: boolean) => {
+    user && setBookmark(id, bookmark);
+  };
+
   return (
     <>
       <div className="flex justify-between my-2 px-4">
@@ -44,7 +42,7 @@ export default function ActionBar({ post }: Props) {
         />
         <ToggleButton
           toggled={bookmarked}
-          onToggle={setBookmarked}
+          onToggle={handleBookmark}
           onIcon={<BookmarkFillIcon />}
           offIcon={<BookmarkIcon />}
         />
