@@ -39,7 +39,7 @@ export default function PostDetail({ post }: Props) {
                     size="small"
                     highlight={commentUsername === username}
                   />
-                  <div className="ml-2">
+                  <div className="ml-2 w-full">
                     <span className="font-bold mr-1">{commentUsername}</span>
                     <span>{comment}</span>
                   </div>
