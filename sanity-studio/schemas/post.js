@@ -21,7 +21,7 @@ export default {
       of: [
         {
           type: 'reference',
-          to: [{type: 'user'}], // "유저"를 "참조" 하는 "배열(type: 'array')"
+          to: [{type: 'user'}], // "유저"를 "참조" 하는 "배열(type: 'array')" => 사용자의 id 배열
         },
       ],
       validation: (Rule) => Rule.unique(),
