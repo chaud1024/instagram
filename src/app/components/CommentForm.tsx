@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import SmileIcon from "./ui/icons/SmileIcon";
 
 type Props = {
-  onPostComment: (commnet: string) => void;
+  onPostComment: (comment: string) => void;
 };
 
 export default function CommentForm({ onPostComment }: Props) {
