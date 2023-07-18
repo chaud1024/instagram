@@ -42,20 +42,27 @@ export default function NewPost({ user: { username, image } }: Props) {
     const files = e.dataTransfer?.files;
     if (files && files[0]) {
       setFile(files[0]);
+      console.log(files[0]);
     }
   };
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!file) return;
+
     setLoading(true);
     const formData = new FormData();
     formData.append("file", file);
     formData.append("text", textRef.current?.value ?? "");
 
-    fetch("/api/posts/", { method: "POST", body: formData })
+    fetch("http://localhost:3000/api/posts/", {
+      method: "POST",
+      body: formData,
+    }) //
       .then((res) => {
         if (!res.ok) {
           setError(`${res.status} ${res.statusText}`);
+          console.log(res.statusText);
           return;
         }
         router.push("/");
@@ -69,6 +76,11 @@ export default function NewPost({ user: { username, image } }: Props) {
         <div className="absolute inset-0 z-20 text-center pt-[30%] bg-sky-500/20">
           <GridSpinner />
         </div>
+      )}
+      {error && (
+        <p className="w-full bg-red-200 text-red-600 font-bold p-4 mb-4 text-center">
+          {error}
+        </p>
       )}
       <PostUserAvatar username={username} image={image ?? ""} />
       <form className="w-full flex flex-col mt-2" onSubmit={handleSubmit}>
