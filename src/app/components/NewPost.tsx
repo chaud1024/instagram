@@ -55,7 +55,7 @@ export default function NewPost({ user: { username, image } }: Props) {
     formData.append("file", file);
     formData.append("text", textRef.current?.value ?? "");
 
-    fetch("http://localhost:3000/api/posts/", {
+    fetch("/api/posts/", {
       method: "POST",
       body: formData,
     }) //
